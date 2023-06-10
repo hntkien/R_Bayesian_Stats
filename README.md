@@ -1,1 +1,1 @@
-# R_Bayesian_Stats
+# Bayesian Statistics using R 
