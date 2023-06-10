@@ -52,9 +52,9 @@ hist(hours.of.sleep, main="")
 Now we want to answer a question: "Do men tend to sleep longer than women?"
 
 ```{r}
-# Constructing parallel boxplots of sleeping times of man and women.
+# Constructing parallel box plots of sleeping times of man and women.
 boxplot(hours.of.sleep ~ Gender)
-title(ylab="Hours of Sleep")
+title("Hours of Sleep")
 ```
 
 Suppose we wish to divide the haircut prices into two groups - the haircut prices for the men and the haircut prices for the women. We do this by use of the R logical operator `==`
@@ -94,4 +94,133 @@ plot(jitter(ToSleep), jitter(hours.of.sleep),
 abline(7.9628, -0.5753)
 ```
 
-# Exploring the Robustness of the t Statistic
+# 1.3 Exploring the Robustness of the t Statistic
+
+## Writing a Function to Compute the t Statistic
+
+To begin, we generate random data for the samples of xs and ys. We simulate a sample of 10 observations from a normal distribution with mean 50 and standard deviation 10 using the `rnorm` function.
+
+```{r}
+x = rnorm(10, mean=50, sd=10) 
+y = rnorm(10, mean=50, sd=10)
+
+# Sample size 
+m = length(x) 
+n = length(y) 
+
+# Compute the pooled standard deviation 
+sp = sqrt((m-1)*sd(x)^2+(n-1)*sd(y^2)/(m+n-2))
+
+# Compute the t statistic 
+t = (mean(x)-mean(y))/(sp*sqrt(1/m+1/n)) 
+print(t)
+```
+
+```{r}
+# Write a short R function to compute t statistic. 
+tstatistic = function(x, y)
+{
+    m = length(x)
+    n = length(y) 
+    sp = sqrt(((m-1)*sd(x)^2+(n-1)*sd(y)^2) / (m+n-2))
+    t = (mean(x)-mean(y)) / (sp*sqrt(1/m + 1/n))
+    return(t) 
+}
+
+# Save the function as "tstatistic.R"
+# Load the function 
+# source("tstatistic.R")
+
+data.x = c(1, 4, 3, 6, 5) 
+data.y = c(5, 4, 7, 6, 10)
+tstatistic(data.x, data.y)
+
+```
+
+## Programming a Monte Carlo Simulation
+
+The following is an R script that implements the simulation algorithm for normal populations with mean 0 and standard deviation 1. The R variable `alpha` is the stated significance level, `m` and `n` are the sample sizes, and `N` is the number of simulations. The `rnorm` command is used to simulate the two samples and `t` contains the value of the t statistic. One decides to reject if $$abs(t)>qt(1 - alpha/2, n+m-2)$$ where $qt(p, df)$ is the *p*th quantile of a t distribution with *df* degrees of freedom.
+
+```{r}
+alpha=.1; m=10; n=10    # set alpha, m, n
+N = 10000               # set the number of simulations 
+n.reject = 0            # counter of num. of rejections 
+
+for (i in 1:N) 
+{
+    x = rnorm(m, mean=0, sd=1)    # simulate xs from population 1 
+    y = rnorm(n, mean=0, sd=1)    # simulate ys from population 2 
+    t = tstatistic(x, y)
+    
+    if (abs(t)>qt(1-alpha/2, n+m-2))
+        n.reject = n.reject + 1   # reject if |t| exceeds critical pt 
+}
+true.sig.level = n.reject/N       # est. is proportion of rejections 
+```
+
+# Exercises
+
+## 1. Movie DVDs owned by students
+
+The variable `Dvds` in the student data set contains the number of movie DVDs owned by students in the class. \### (a) Construct a histogram of this variable
+
+```{r}
+hist(Dvds, main="")
+```
+
+### (b) Summarize this variable
+
+```{r}
+summary(Dvds)
+```
+
+### (c) Construct a frequency table of the individual values of `Dvds` that were observed.
+
+```{r}
+students.dvds = table(Dvds)
+barplot(students.dvds) 
+```
+
+## 2. Student heights
+
+The variable `Height` contains the height (in inches) of each student in the class. \### (a) Construct parallel box plots of the heights by the `Gender` variable.
+
+```{r}
+boxplot(Height ~ Gender)
+```
+
+### (b) Assign the box plot output to a variable and print the output.
+
+```{r}
+output = boxplot(Height ~ Gender) 
+print(output) 
+```
+
+### (c) Based on the box plots, on average, male students are approximately 5 inches taller than female students.
+
+## 3. Sleeping times
+
+The variables `ToSleep` and `WakeUp` contain, respectively, the time to bed and wake-up time for each student the previous evening. (The data are recorded as hours past midnight, so a value of -2 indicates 10 P.M) \### (a) Construct a scatter plot of `ToSleep` and `WakeUp`.
+
+```{r}
+plot(ToSleep, WakeUp, 
+     xlab="Time to bed", ylab="Wake-up time")
+```
+
+### (b) Find a least-squares fit to these data.
+
+```{r}
+fit = lm(WakeUp ~ ToSleep)
+fit 
+```
+
+### (c) Place the least-squares fit on the scatter plot
+
+```{r}
+# In R markdown, we need to re-run the plot command 
+plot(ToSleep, WakeUp, 
+     xlab="Time to bed", ylab="Wake-up time")
+abline(7.9628, 0.4247)
+```
+
+### (d) The wake-up time for a student who went to bed at midnight can be estimated as: $$\Large 0.4247\times0+7.9628 = 7.9628 \approx 8 A.M$$
