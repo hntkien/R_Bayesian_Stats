@@ -1,0 +1,97 @@
+---
+title: 'Chapter 1: An Introduction to R'
+output: html_document
+date: "2023-06-10"
+---
+
+# 1.2 Exploring a Student Data set
+
+## Reading the Data into R
+
+The data for 657 students were recorded in a spreadsheet and saved as the file "studentdata.txt" in text format with tabs between the fields. The first line of the data file is a header that includes the variable names.
+
+```{r}
+library(LearnBayes)
+data(studentdata)
+# Display the first row of the data frame 
+studentdata[1, ]
+```
+
+## R Commands to Summarize and graph a Single Batch
+
+One categorical variable in this data set is `Drink` which indicates the student's drinking preference between milk, pop, and water.
+
+```{r}
+# Make the variable names visible in the R environment
+attach(studentdata)
+# Tally the different responses 
+table(Drink) 
+```
+
+```{r}
+# Bar plot 
+t = table(Drink) 
+barplot(t, xlab='Drink', ylab='Count')
+```
+
+Suppose we are next interested in examining how long the students slept the previous night.
+
+```{r}
+hours.of.sleep = WakeUp - ToSleep 
+# Descriptive statistics
+summary(hours.of.sleep)
+```
+
+```{r}
+# Construct a histogram to see the distribution
+hist(hours.of.sleep, main="")
+```
+
+## R Commands to Compare Batches
+
+Now we want to answer a question: "Do men tend to sleep longer than women?"
+
+```{r}
+# Constructing parallel boxplots of sleeping times of man and women.
+boxplot(hours.of.sleep ~ Gender)
+title(ylab="Hours of Sleep")
+```
+
+Suppose we wish to divide the haircut prices into two groups - the haircut prices for the men and the haircut prices for the women. We do this by use of the R logical operator `==`
+
+```{r}
+female.Haircut = Haircut[Gender=='female'] 
+male.Haircut = Haircut[Gender=='male'] 
+# Summarize descriptive statistics 
+summary(female.Haircut) 
+summary(male.Haircut) 
+```
+
+## R Commands for Studying Relationships
+
+To get a good night's sleep, one may want to go to bed early in the evening. This raises the question: "Is the length of sleep for a student related to the time that he/she goes to be?" We can explore the relationship between the `ToSleep` and `hours.of.sleep` variables by means of a scatter plot.
+
+```{r}
+# Construct a scatter plot 
+plot(jitter(ToSleep), jitter(hours.of.sleep),
+     xlab="Time", ylab="Hours of Sleep")
+```
+
+We can describe the decreasing pattern in this scatter plot by fitting a line.
+
+```{r}
+fit = lm(hours.of.sleep ~ ToSleep)
+# Display the least-squares line 
+fit 
+```
+
+The slope is approximately -0.5, which means that a student loses about a half-hour of sleep for every hour later that he/she goes to bed.
+
+```{r}
+# Display the line on top of the scatter plot 
+plot(jitter(ToSleep), jitter(hours.of.sleep),
+     xlab="Time", ylab="Hours of Sleep")
+abline(7.9628, -0.5753)
+```
+
+# Exploring the Robustness of the t Statistic
