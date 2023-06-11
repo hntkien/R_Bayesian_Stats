@@ -92,12 +92,12 @@ is to construct a density $\large g(p)$ on the interval $\large (0, 1)$
 that represents the person’s initial beliefs.
 
 Beta distribution density
-$$\large g(p) \propto p^{a-1}(1-p)^{b-1}, \quad 0<p<1$$ where the
-hyper-parameters $\large a$ and $\large b$ are chosen to reflect the
+$$\large {g(p) \propto p^{a-1}(1-p)^{b-1}, \quad 0 < p < 1}$$
+where the hyper-parameters $\large a$ and $\large b$ are chosen to reflect the
 user’s prior beliefs about $\large p$
 
 The posterior density is also of the beta form with updated parameters:
-$$\large g(p) \propto p^{a+s-1}(1-p)^{b+f-1}, \quad 0<p<1$$
+$$\large g(p) \propto p^{a+s-1}(1-p)^{b+f-1}, \quad 0 < p < 1$$
 
 ``` r
 p = seq(0, 1, length=500) 
@@ -226,11 +226,11 @@ hist(ps, xlab="p")
 ```
 
 ![](Chap_2_BayesianIntro_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
-\# 2.6 Prediction
+# 2.6 Prediction
 
 If the current beliefs about $\large p$ are contained in the density
 $\large g(p)$, then the predictive density of $\large \tilde y$ is given
-by: $$ \large f(\tilde y) = \int{f(\tilde y | p)g(p) \: \mathrm{d}p}$$
+by: $$\large f(\tilde y) = \int {f(\tilde y | p) g(p) \mathrm{d}p}$$
 
 If $\large g$ is a prior density, then we refer to this as the *prior*
 predictive density, and if $\large g$ is a posterior, then $\large f$ is
@@ -251,6 +251,7 @@ title("Discrete prior density")
 ```
 
 ![](Chap_2_BayesianIntro_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
 Suppose instead that we model our beliefs about $\large p$ using a
 $\large beta(a,b)$ prior.
 
@@ -263,6 +264,7 @@ title("Beta(3.4, 7.4) distribution prior density")
 ```
 
 ![](Chap_2_BayesianIntro_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
 For any prior:
 
 ``` r
@@ -286,6 +288,7 @@ plot(ys, predprob, type='h', xlab="y",
 ```
 
 ![](Chap_2_BayesianIntro_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+
 Suppose we wish to summarize this discrete predictive distribution by an
 interval that covers at least 90% of the probability.
 
