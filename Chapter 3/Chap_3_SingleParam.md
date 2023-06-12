@@ -18,7 +18,7 @@ Suppose the non-informative prior density $p(\sigma ^2) = 1/ \sigma ^2$
 is assigned to the variance. Then the posterior density of $\sigma ^2$
 is given, up to a proportionality constant, by
 $$\large {g(\sigma ^2 | data) \propto (\sigma ^2)^{- \dfrac{n}{2} - 1} exp \{- \dfrac{v}{2 \sigma ^2} \}}$$
-where $v = \sum_{i=1}^{n}{d_i^2}$. If we define the precision parameter
+where $v = \sum{_{i=1}^{n}{d_i^2}}$. If we define the precision parameter
 $P = 1/ \sigma ^2$, then it can be shown that $P$ is distributed as
 $U/v$, where $U$ has a chi-squared distribution with $n$ degrees of
 freedom. Suppose we are interested in a point estimate and a 95%
