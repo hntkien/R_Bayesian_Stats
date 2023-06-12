@@ -408,6 +408,7 @@ plot(theta, post, type="h",
 ```
 
 ![](Chap_3_SingleParam_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+
 **Comment** From a prior uniform distribution, where every value of
 $\theta$ can be a possible choice, the posterior distribution shows that
 suitable values for $\theta$ lie between 7 and 11, with the majority of
