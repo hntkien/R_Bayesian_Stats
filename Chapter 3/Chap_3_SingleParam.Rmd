@@ -10,7 +10,7 @@ date: "2023-06-11"
 
 Gelman et al (2003) consider a problem of estimating an unknown variance using American football scores. The focus is on the difference `d` between a game outcome (winning score minus losing score) and a published point spread. We observe $d_1, ..., d_n$, the observed differences between game outcomes and point spreads for $n$ football games. If these differences are assumed to be a random sample from a normal distribution with mean 0 and unknown variance $\sigma ^2$, the likelihood function is given by $$\large {L(\sigma ^2) = (\sigma ^2)^{-n/2} exp\{- \sum_{i=1}^{n} \dfrac{d_i^2}{2 \sigma ^2}\}, \quad \sigma ^2 > 0}$$
 
-Suppose the non-informative prior density $p(\sigma ^2) = 1/ \sigma ^2$ is assigned to the variance. Then the posterior density of $\sigma ^2$ is given, up to a proportionality constant, by $$\large {g(\sigma ^2 | data) \propto (\sigma ^2)^{- \dfrac{n}{2} - 1} exp \{- \dfrac{v}{2 \sigma ^2} \}}$$ where $v = \sum_{i=1}^{n} d_i^2$. If we define the precision parameter $P = 1/ \sigma ^2$, then it can be shown that $P$ is distributed as $U/v$, where $U$ has a chi-squared distribution with $n$ degrees of freedom. Suppose we are interested in a point estimate and a 95% probability interval for the standard deviation $\sigma$.
+Suppose the non-informative prior density $p(\sigma ^2) = 1/ \sigma ^2$ is assigned to the variance. Then the posterior density of $\sigma ^2$ is given, up to a proportionality constant, by $$\large {g(\sigma ^2 | data) \propto (\sigma ^2)^{- \dfrac{n}{2} - 1} exp \{- \dfrac{v}{2 \sigma ^2} \}}$$ where $v = \sum_{i=1}^{n}{d_i^2}$. If we define the precision parameter $P = 1/ \sigma ^2$, then it can be shown that $P$ is distributed as $U/v$, where $U$ has a chi-squared distribution with $n$ degrees of freedom. Suppose we are interested in a point estimate and a 95% probability interval for the standard deviation $\sigma$.
 
 In the following R output, we first read in the data file `footballscores` that is available in the `LearnBayes` package. For each of 672 games, the data file contains `favorite` and `underdog`, the actual scores of the favorite and underdog teams, and `spread`, the published point spread. We compute the difference variable `d`. As in the preceding notation, `n` is the sample size and `v` is the sum of squares of the differences.
 
@@ -62,7 +62,7 @@ py = dpois(y, lam*ex) * dgamma(lam, shape=alpha,
                                rate=beta)/dgamma(lam,
                                                  shape=alpha+y,
                                                  rate=beta+ex)
-cbind(y, round(py, 3))
+plot(y, round(py, 3), type="h")
 ```
 
 The posterior density of $\lambda$ can be summarized by simulating 1000 values from the gamma density.
@@ -81,7 +81,7 @@ py = dpois(y, lam*ex) * dgamma(lam,
                                rate=beta) / dgamma(lam,
                                                    shape=alpha+y,
                                                    rate=beta+ex)
-cbind(y, round(py, 3))
+plot(y, round(py, 3), type="h")
 ```
 
 ```{r}
@@ -188,7 +188,7 @@ In the expression for $\lambda (y)$, $p(y | .5)$ is the binomial density for y w
 
 The predictive density for $y$ can be computed using the identity $$\large {m_1(y) = \dfrac{f(y | p)g_1(p)}{g_1(p | y)}}$$.
 
-```{r} 
+```{r}
 n = 20    # Number of tosses 
 y = 5     # 5 heads observed
 a  = 10   # beta distribution parameters
@@ -197,13 +197,15 @@ m1 = dbinom(y, n, p) * dbeta(p, a, a)/dbeta(p, a+y, a+n-y)
 lambda = dbinom(y, n, p)/(dbinom(y, n, p) + m1)
 lambda 
 ```
-We get the surprising result that the posterior probability of the hypothesis of fairness H is .28, which is against fairness. 
+
+We get the surprising result that the posterior probability of the hypothesis of fairness H is .28, which is against fairness.
 
 ```{r}
 # From LearnBayes library 
 pbetat(p0=p, prob=.5, ab=c(a,a), data=c(y, n-y))
 ```
-The output variable `post` is the posterior probability that $p = .5$, which agrees with the calculation. The output variable `bf` is the Bayes factor in support of the null hypothesis. 
+
+The output variable `post` is the posterior probability that $p = .5$, which agrees with the calculation. The output variable `bf` is the Bayes factor in support of the null hypothesis.
 
 Since the choice of the prior parameter $a = 10$ in this analysis seems arbitrary, it is natural to ask about the sensitivity of this posterior calculation to the choice of this parameter.
 
@@ -215,9 +217,10 @@ lambda = dbinom(y, n, p)/(dbinom(y, n, p) + m2)
 plot(loga, lambda, type="l", 
      xlab="log(a)", ylab="Prob(coin is fair)")
 ```
+
 If we observed "5 heads or fewer", the posterior probability that the coin is fair is given by $$\large {\lambda (y) = \dfrac{.5P_0(Y \leq 5)}{.5P_0(Y \leq 5) + .5P_1(y \leq 5)}}$$ where $P_0(Y \leq 5)$ is the propbability of five heads or fewer under the binomial model with $p = .5$ and $P_1(Y \leq 5)$ is the predictive probability of this event under the alternative model with a $beta(10, 10)$ prior on $p$.
 
-```{r} 
+```{r}
 n = 20
 y = 5 
 a = 10 
@@ -228,4 +231,45 @@ for (k in 0:y){
 }
 lambda = pbinom(y, n, p)/(pbinom(y, n, p) + m2)
 lambda 
+```
+# 3.8 Exercises 
+
+## 1. Cauchy sampling model 
+
+Suppose one observes a random sample $y_1, ...,y_n$ from a Cauchy density with location $\theta$ and scale parameter 1. If a uniform prior is placed on $\theta$, then the posterior density is given (up to a proportionality constant) by $$\large {g(\theta | data) \propto \prod_{i=1}^{n}{\dfrac{1}{1 + (y_i - \theta)^2}}}$$
+
+Suppose one observes the data 0, 10, 9, 8, 11, 3, 3, 8, 8, 11 
+
+### a) Set up a grid of values of $\theta$ 
+```{r}
+theta  = seq(-2, 12, by=0.1)
+```
+### b) Compute the posterior density on this grid 
+
+```{r}
+y = c(0, 10, 9, 8, 11, 3, 3, 8, 8, 11)
+n_samples = length(y) 
+post = 1
+for (i in 1:n_samples){
+    post = post * 1 / (1+(y[i]-theta)^2)
+}
+```
+
+### c) Plot the density and comment on its main features 
+
+```{r}
+# Convert to probabilities
+plot(theta, post, type="h",
+     ylab="Posterior density")
+```
+**Comment** From a prior uniform distribution, where every value of $\theta$ can be a possible choice, the posterior distribution shows that suitable values for $\theta$ lie between 7 and 11, with the majority of them lie between 8 and 9. 
+
+### d) Compute the posterior mean and posterior standard deviation of $\theta$ 
+
+```{r}
+post = post/sum(post)
+m = sum(theta * post)
+s = sqrt(sum(theta^2 * post) - m^2)
+print(paste("Posterior mean", m))
+print(paste("Posterior std", s))
 ```

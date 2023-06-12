@@ -18,7 +18,7 @@ Suppose the non-informative prior density $p(\sigma ^2) = 1/ \sigma ^2$
 is assigned to the variance. Then the posterior density of $\sigma ^2$
 is given, up to a proportionality constant, by
 $$\large {g(\sigma ^2 | data) \propto (\sigma ^2)^{- \dfrac{n}{2} - 1} exp \{- \dfrac{v}{2 \sigma ^2} \}}$$
-where $v = \sum{_{i=1}^{n}} d_i^2$. If we define the precision parameter
+where $v = \sum_{i=1}^{n}{d_i^2}$. If we define the precision parameter
 $P = 1/ \sigma ^2$, then it can be shown that $P$ is distributed as
 $U/v$, where $U$ has a chi-squared distribution with $n$ degrees of
 freedom. Suppose we are interested in a point estimate and a 95%
@@ -67,7 +67,7 @@ quantile(s, probs=c(0.025, 0.5, 0.975))
 ```
 
     ##     2.5%      50%    97.5% 
-    ## 13.14853 13.86086 14.63380
+    ## 13.16853 13.88242 14.63075
 
 # 3.3 Estimating a Heart Transplant Mortality Rate
 
@@ -88,21 +88,10 @@ py = dpois(y, lam*ex) * dgamma(lam, shape=alpha,
                                rate=beta)/dgamma(lam,
                                                  shape=alpha+y,
                                                  rate=beta+ex)
-cbind(y, round(py, 3))
+plot(y, round(py, 3), type="h")
 ```
 
-    ##        y      
-    ##  [1,]  0 0.933
-    ##  [2,]  1 0.065
-    ##  [3,]  2 0.002
-    ##  [4,]  3 0.000
-    ##  [5,]  4 0.000
-    ##  [6,]  5 0.000
-    ##  [7,]  6 0.000
-    ##  [8,]  7 0.000
-    ##  [9,]  8 0.000
-    ## [10,]  9 0.000
-    ## [11,] 10 0.000
+![](Chap_3_SingleParam_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 The posterior density of $\lambda$ can be summarized by simulating 1000
 values from the gamma density.
@@ -123,21 +112,10 @@ py = dpois(y, lam*ex) * dgamma(lam,
                                rate=beta) / dgamma(lam,
                                                    shape=alpha+y,
                                                    rate=beta+ex)
-cbind(y, round(py, 3))
+plot(y, round(py, 3), type="h")
 ```
 
-    ##        y      
-    ##  [1,]  0 0.172
-    ##  [2,]  1 0.286
-    ##  [3,]  2 0.254
-    ##  [4,]  3 0.159
-    ##  [5,]  4 0.079
-    ##  [6,]  5 0.033
-    ##  [7,]  6 0.012
-    ##  [8,]  7 0.004
-    ##  [9,]  8 0.001
-    ## [10,]  9 0.000
-    ## [11,] 10 0.000
+![](Chap_3_SingleParam_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
 lambdaB = rgamma(1000, shape=alpha+yobs, rate=beta+ex) 
@@ -368,6 +346,7 @@ plot(loga, lambda, type="l",
 ```
 
 ![](Chap_3_SingleParam_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+
 If we observed “5 heads or fewer”, the posterior probability that the
 coin is fair is given by
 $$\large {\lambda (y) = \dfrac{.5P_0(Y \leq 5)}{.5P_0(Y \leq 5) + .5P_1(y \leq 5)}}$$
@@ -390,3 +369,63 @@ lambda
 ```
 
     ## [1] 0.2184649
+
+# 3.8 Exercises
+
+## 1. Cauchy sampling model
+
+Suppose one observes a random sample $y_1, ...,y_n$ from a Cauchy
+density with location $\theta$ and scale parameter 1. If a uniform prior
+is placed on $\theta$, then the posterior density is given (up to a
+proportionality constant) by
+$$\large {g(\theta | data) \propto \prod_{i=1}^{n}{\dfrac{1}{1 + (y_i - \theta)^2}}}$$
+
+Suppose one observes the data 0, 10, 9, 8, 11, 3, 3, 8, 8, 11
+
+### a) Set up a grid of values of $\theta$
+
+``` r
+theta  = seq(-2, 12, by=0.1)
+```
+
+### b) Compute the posterior density on this grid
+
+``` r
+y = c(0, 10, 9, 8, 11, 3, 3, 8, 8, 11)
+n_samples = length(y) 
+post = 1
+for (i in 1:n_samples){
+    post = post * 1 / (1+(y[i]-theta)^2)
+}
+```
+
+### c) Plot the density and comment on its main features
+
+``` r
+# Convert to probabilities
+plot(theta, post, type="h",
+     ylab="Posterior density")
+```
+
+![](Chap_3_SingleParam_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+**Comment** From a prior uniform distribution, where every value of
+$\theta$ can be a possible choice, the posterior distribution shows that
+suitable values for $\theta$ lie between 7 and 11, with the majority of
+them lie between 8 and 9.
+
+### d) Compute the posterior mean and posterior standard deviation of $\theta$
+
+``` r
+post = post/sum(post)
+m = sum(theta * post)
+s = sqrt(sum(theta^2 * post) - m^2)
+print(paste("Posterior mean", m))
+```
+
+    ## [1] "Posterior mean 8.62934107769104"
+
+``` r
+print(paste("Posterior std", s))
+```
+
+    ## [1] "Posterior std 0.64537983043562"
