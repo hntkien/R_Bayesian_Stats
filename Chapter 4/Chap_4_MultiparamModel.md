@@ -21,7 +21,7 @@ where:
 - the posterior of $\mu$ conditional on $\sigma ^2$ is distributed
   $\mbox{N}(\bar y, \sigma /\sqrt{n})$
 - the marginal posterior of $\sigma ^2$ is distributed
-  $S_{\chi _{n-1}^{-2}}$ where $\chi ^{-2}_{\nu}$ denotes an inverse
+  $S_{\chi_{n-1}^{-2}}$ where $\chi^{-2}_{\nu}$ denotes an inverse
   chi-square distribution with $\nu$ degrees of freedom.
 
 We first use R to construct a contour plot of the joint posterior
