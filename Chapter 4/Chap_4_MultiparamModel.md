@@ -21,7 +21,7 @@ where:
 - the posterior of $\mu$ conditional on $\sigma ^2$ is distributed
   $\mbox{N}(\bar y, \sigma /\sqrt{n})$
 - the marginal posterior of $\sigma ^2$ is distributed
-  $S_{\chi _{n-1}^{-2}}$ where $\chi ^{-2}_{\nu}$ denotes an inverse
+  $S_{\chi_{n-1}^{-2}}$ where $\chi ^{-2}_{\nu}$ denotes an inverse
   chi-square distribution with $\nu$ degrees of freedom.
 
 We first use R to construct a contour plot of the joint posterior
@@ -116,7 +116,7 @@ $$\large {log(\dfrac{p_i}{1-p_i}) = \beta _0 + \beta _1 x_i}$$
 
 The likelihood function of the unknown regression parameters $\beta _0$
 and $\beta _1$ is given by
-$$\large {L(\beta _0, \beta _1) = \prod{_{i=1}^{4}{p_{i}^{y_i}(1-p_i)^{n_i-y_i}}}}$$
+$$\large {L(\beta _{0}, \beta _{1}) = \prod{_{i=1}^{4}{p_{i}^{y_i} (1 - p_i)^{n_i - y_i}}}}$$
 where
 $p_i = exp(\dfrac{\beta _0 + \beta _1 x_i}{1 + exp(\beta _0 + \beta _1 x_i)})$.
 
