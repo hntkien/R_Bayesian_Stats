@@ -250,7 +250,7 @@ ggplot(sim_prior, aes(mu_sim_prior, tau_sim_prior)) +
 
 ```{r}
 ggplot(sim_prior, aes(x=sigma_sim_prior)) + 
-    geom_histogram(aes(y=..density..), color="black", fill="white") + 
+    geom_histogram(aes(y=after_stat(density)), color="black", fill="white") + 
     geom_density(linewidth=1, color="skyblue")
 
 ggplot(sim_prior, aes(mu_sim_prior, sigma_sim_prior)) + 
@@ -332,11 +332,11 @@ cor(sim_posterior$mu, sim_posterior$tau)
 
 ```{r}
 ggplot(sim_posterior, aes(mu)) + 
-    geom_histogram(aes(y=..density..), color="black", fill="white") + 
+    geom_histogram(aes(y=after_stat(density)), color="black", fill="white") + 
     geom_density(linewidth=1, color="seagreen")
 
 ggplot(sim_posterior, aes(tau)) + 
-    geom_histogram(aes(y=..density..), color="black", fill="white") + 
+    geom_histogram(aes(y=after_stat(density)), color="black", fill="white") + 
     geom_density(linewidth=1, color="seagreen")
 
 ggplot(sim_posterior, aes(mu, tau)) + 
@@ -353,11 +353,11 @@ cor(sim_posterior$mu, sim_posterior$sigma)
 
 ```{r}
 ggplot(sim_posterior, aes(mu)) + 
-    geom_histogram(aes(y=..density..), color="black", fill="white") + 
+    geom_histogram(aes(y=after_stat(density)), color="black", fill="white") + 
     geom_density(linewidth=1, color="seagreen")
 
 ggplot(sim_posterior, aes(sigma)) + 
-    geom_histogram(aes(y=..density..), color="black", fill="white") + 
+    geom_histogram(aes(y=after_stat(density)), color="black", fill="white") + 
     geom_density(linewidth=1, color="seagreen")
 
 ggplot(sim_posterior, aes(mu, sigma)) + 

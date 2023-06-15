@@ -21,7 +21,7 @@ where:
 - the posterior of $\mu$ conditional on $\sigma ^2$ is distributed
   $\mbox{N}(\bar y, \sigma /\sqrt{n})$
 - the marginal posterior of $\sigma ^2$ is distributed
-  $S_{\chi_{n-1}^{-2}}$ where $\chi ^{-2}_{\nu}$ denotes an inverse
+  $S_{\chi _{n-1}^{-2}}$ where $\chi ^{-2}_{\nu}$ denotes an inverse
   chi-square distribution with $\nu$ degrees of freedom.
 
 We first use R to construct a contour plot of the joint posterior
@@ -76,7 +76,7 @@ quantile(mu, c(0.025, 0.975))
 ```
 
     ##     2.5%    97.5% 
-    ## 254.7938 299.0307
+    ## 255.8406 301.7288
 
 A 95% credible interval for the mean completion time is (255.63, 302.36)
 minutes.
@@ -91,7 +91,7 @@ quantile(sqrt(sigma2), c(0.025, 0.975))
 ```
 
     ##     2.5%    97.5% 
-    ## 37.71414 71.14751
+    ## 37.75372 70.98069
 
 From the output, we see that an approximate 95% probability interval for
 $\sigma$ is (37.74, 72.96) minutes.
@@ -116,7 +116,7 @@ $$\large {log(\dfrac{p_i}{1-p_i}) = \beta _0 + \beta _1 x_i}$$
 
 The likelihood function of the unknown regression parameters $\beta _0$
 and $\beta _1$ is given by
-$$\large {L(\beta _{0}, \beta _{1}) = \prod{_{i=1}^{4}{p_{i}^{y_i} (1 - p_i)^{n_i - y_i}}}}$$
+$$\large {L(\beta _0, \beta _1) = \prod{_{i=1}^{4}{p_{i}^{y_i}(1-p_i)^{n_i-y_i}}}}$$
 where
 $p_i = exp(\dfrac{\beta _0 + \beta _1 x_i}{1 + exp(\beta _0 + \beta _1 x_i)})$.
 
@@ -212,7 +212,7 @@ quantile(theta, c(.025, .975))
 ```
 
     ##        2.5%       97.5% 
-    ## -0.27689640  0.06802481
+    ## -0.28352780  0.08917603
 
 # Examples
 
@@ -407,15 +407,9 @@ ggplot(sim_prior, aes(mu_sim_prior, tau_sim_prior)) +
 
 ``` r
 ggplot(sim_prior, aes(x=sigma_sim_prior)) + 
-    geom_histogram(aes(y=..density..), color="black", fill="white") + 
+    geom_histogram(aes(y=after_stat(density)), color="black", fill="white") + 
     geom_density(linewidth=1, color="skyblue")
 ```
-
-    ## Warning: The dot-dot notation (`..density..`) was deprecated in ggplot2 3.4.0.
-    ## ℹ Please use `after_stat(density)` instead.
-    ## This warning is displayed once every 8 hours.
-    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-    ## generated.
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
@@ -437,7 +431,7 @@ quantile(mu_sim_prior, c(0.01, 0.99))
 ```
 
     ##       1%      99% 
-    ## 97.90030 99.29544
+    ## 97.90551 99.29612
 
 4.  Find a central 98% prior credible interval for the precision
     $\tau = 1/ \sigma ^2$.
@@ -447,7 +441,7 @@ quantile(tau_sim_prior, c(.01, .99))
 ```
 
     ##        1%       99% 
-    ## 0.6365181 5.8137276
+    ## 0.6390629 5.8343028
 
 5.  Find and interpret a central 98% prior credible interval for
     $\sigma$.
@@ -457,7 +451,7 @@ quantile(sigma_sim_prior, c(.01, .99))
 ```
 
     ##        1%       99% 
-    ## 0.4147369 1.2534143
+    ## 0.4140049 1.2509161
 
 6.  What is the prior credibility that both $\mu$ and $\sigma$ lie
     within their credible intervals?
@@ -526,11 +520,11 @@ sim_posterior = theta[sample(1:nrow(theta), 100000,
 cor(sim_posterior$mu, sim_posterior$tau)
 ```
 
-    ## [1] -0.2911239
+    ## [1] -0.2929104
 
 ``` r
 ggplot(sim_posterior, aes(mu)) + 
-    geom_histogram(aes(y=..density..), color="black", fill="white") + 
+    geom_histogram(aes(y=after_stat(density)), color="black", fill="white") + 
     geom_density(linewidth=1, color="seagreen")
 ```
 
@@ -540,7 +534,7 @@ ggplot(sim_posterior, aes(mu)) +
 
 ``` r
 ggplot(sim_posterior, aes(tau)) + 
-    geom_histogram(aes(y=..density..), color="black", fill="white") + 
+    geom_histogram(aes(y=after_stat(density)), color="black", fill="white") + 
     geom_density(linewidth=1, color="seagreen")
 ```
 
@@ -564,11 +558,11 @@ ggplot(sim_posterior, aes(mu, tau)) +
 cor(sim_posterior$mu, sim_posterior$sigma)
 ```
 
-    ## [1] 0.2827891
+    ## [1] 0.2854639
 
 ``` r
 ggplot(sim_posterior, aes(mu)) + 
-    geom_histogram(aes(y=..density..), color="black", fill="white") + 
+    geom_histogram(aes(y=after_stat(density)), color="black", fill="white") + 
     geom_density(linewidth=1, color="seagreen")
 ```
 
@@ -578,7 +572,7 @@ ggplot(sim_posterior, aes(mu)) +
 
 ``` r
 ggplot(sim_posterior, aes(sigma)) + 
-    geom_histogram(aes(y=..density..), color="black", fill="white") + 
+    geom_histogram(aes(y=after_stat(density)), color="black", fill="white") + 
     geom_density(linewidth=1, color="seagreen")
 ```
 
