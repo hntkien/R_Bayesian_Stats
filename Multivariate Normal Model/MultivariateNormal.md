@@ -10,19 +10,17 @@ A sample of twenty-two children are given reading comprehension tests
 before and after receiving a particular instructional method. each
 student $i$ will then have two scores, $Y_{i,1}$ and $Y_{i,2}$ denoting
 the pre- and post-instructional scores, respectively. We denote each
-student’s pair of scores as a $2 \times 1$ vector $\textbf {Y}_i$, so
-that
+student’s pair of scores as a $2 \times 1$ vector $\textbf Y_i$, so
+that 
 
-$$
-\textbf {Y}_i = 
-    \begin{pmatrix}
-    Y_{i, 1} \\
-    Y_{i, 2}
-    \end{pmatrix}
-= 
+$$\textbf Y_i = 
 \begin{pmatrix}
-score \: on \: first \: test \\
-score \: on \: second \: test
+Y_{i, 1} \\
+Y_{i, 2}
+\end{pmatrix} = 
+\begin{pmatrix}
+score \ on \ first \ test \\
+score \ on \ second \ test
 \end{pmatrix}
 $$
 
@@ -34,8 +32,7 @@ E[\textbf {Y}] =
 \begin{pmatrix}
     E[Y_{i,1}] \\
     E[Y_{i,2}]
-\end{pmatrix}
-=
+\end{pmatrix} =
 \begin{pmatrix}
     \theta _1 \\
     \theta _2
@@ -49,8 +46,7 @@ $$
 \begin{pmatrix}
     E[Y_1^2]-E[Y_1]^2 & E[Y_1 Y_2]-E[Y_1]E[Y_2] \\
     E[Y_1 Y_2]-E[Y_1]E[Y_2] & E[Y_2 ^2]-E[Y_2]^2
-\end{pmatrix}
-=
+\end{pmatrix} =
 \begin{pmatrix}
     \sigma_1 ^2 & \sigma_{1,2} \\
     \sigma_{1,2} & \sigma_2 ^2
