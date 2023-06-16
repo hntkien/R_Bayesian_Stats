@@ -195,14 +195,6 @@ for(j1 in 1:p) {
 ![](MultivariateNormal_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 ``` r
-#dev.off()
-
-#p<-dim(Y)[2]
-
-###
-```
-
-``` r
 ### Prior parameters 
 mu0 = c(120,64,26,26)
 sd0 = (mu0/2)
