@@ -114,11 +114,8 @@ level $x_i$. We assume $y_i$ is $\mbox{binomial}(n_i, p_i)$, where the
 probability $p_i$ follows the logistic model
 $$\large {log(\dfrac{p_i}{1-p_i}) = \beta _0 + \beta _1 x_i}$$
 
-The likelihood function of the unknown regression parameters $\beta _0$
-and $\beta _1$ is given by
-$$\large {L(\beta _0, \beta _1) = \prod{_{i=1}^{4}{p_{i}^{y_i}(1-p_i)^{n_i-y_i}}}}$$
-where
-$p_i = exp(\dfrac{\beta _0 + \beta _1 x_i}{1 + exp(\beta _0 + \beta _1 x_i)})$.
+The likelihood function of the unknown regression parameters $\beta_0$ and $\beta_1$ is given by $$\large {L(\beta_0, \beta_1) = \prod{_{i=1}^{4}{p_i^{y_i} (1-p_i)^{n_i-y_i}}}}$$
+where $p_i = exp(\dfrac{\beta_0 + \beta_1 x_i}{1 + exp(\beta_0 + \beta_1 x_i)})$.
 
 If the standard flat non-informative prior is placed on
 $(\beta _0, \beta _1)$, then the posterior density is proportional to
